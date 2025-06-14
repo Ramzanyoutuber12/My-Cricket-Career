@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Cricket Career: Legends of the Pitch</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tagline {
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        .game-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .player-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 2;
+            min-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stats-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .skill-meter {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .news-feed {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .news-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .match-result {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-indicator {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .create-player-form {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="create-player-screen" class="create-player-form">
+        <h2>Create Your Cricketer</h2>
+        <div class="form-group">
+            <label for="player-name">Player Name</label>
+            <input type="text" id="player-name" placeholder="Enter your player's name">
+        </div>
+        
+        <div class="form-group">
+            <label for="player-role">Player Role</label>
+            <select id="player-role">
+                <option value="Batter">Batter</option>
+                <option value="Bowler">Bowler</option>
+                <option value="All-Rounder">All-Rounder</option>
+                <option value="Wicket-Keeper">Wicket-Keeper</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="player-background">Background</label>
+            <select id="player-background">
+                <option value="Street Cricket">Street Cricket</option>
+                <option value="Cricket Academy">Cricket Academy</option>
+                <option value="Local Club">Local Club</option>
+                <option value="University Team">University Team</option>
+            </select>
+        </div>
+        
+        <button id="create-player-btn" style="width: 100%; padding: 12px;">Start Career</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div class="container">
+            <header>
+                <h1>Ultimate Cricket Career</h1>
+                <p class="tagline">From the Streets to the Stadium – Forge Your Legacy!</p>
+            </header>
+            
+            <div class="game-section">
+                <div class="player-card">
+                    <h2 id="player-name-display">Player Name</h2>
+                    <p id="player-role-display">Role: Batter</p>
+                    <p id="player-age">Age: 18</p>
+                    <p id="player-reputation">Reputation: 1.0/10</p>
+                    <p id="player-form">Form: →</p>
+                    <p id="player-fatigue">Fatigue: 0/10</p>
+                    <p id="player-injury" class="hidden">!!! INJURED !!!</p>
+                    
+                    <h3>Skills</h3>
+                    <div id="skills-container">
+                        <!-- Skills will be populated by JavaScript -->
+                    </div>
+                    
+                    <h3>Traits</h3>
+                    <div id="traits-container">
+                        <!-- Traits will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="action-panel">
+                    <h2>Actions</h2>
+                    <div>
+                        <h3>Training</h3>
+                        <button id="train-batting">Train Batting</button>
+                        <button id="train-bowling">Train Bowling</button>
+                        <button id="train-fielding">Train Fielding</button>
+                        <button id="train-fitness">Train Fitness</button>
+                        <button id="train-mental">Train Mental</button>
+                        
+                        <div>
+                            <label for="train-intensity">Intensity (1-3):</label>
+                            <input type="number" id="train-intensity" min="1" max="3" value="1" style="width: 50px;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h3>Matches</h3>
+                        <button id="play-t20">Play T20 Match</button>
+                        <button id="play-odi">Play ODI Match</button>
+                        <button id="play-test">Play Test Match</button>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button id="rest-btn">Rest (3 days)</button>
+                        <button id="advance-time">Advance Time (7 days)</button>
+                    </div>
+                    
+                    <div id="match-result" class="match-result hidden">
+                        <h3>Match Result</h3>
+                        <p id="match-type-result"></p>
+                        <p id="match-runs"></p>
+                        <p id="match-wickets" class="hidden"></p>
+                        <p id="match-performance"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-panel">
+                <h2>Career Statistics</h2>
+                <div id="stats-container">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="news-feed">
+                <h2>Cricket World News</h2>
+                <div id="news-container">
+                    <div class="news-item">Welcome to your cricket career!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        const gameState = {
+            player: null,
+            world: {
+                currentDate: new Date(2023, 0, 1),
+                news: ["Welcome to Ultimate Cricket Career!"]
+            }
+        };
+
+        // DOM elements
+        const createPlayerScreen = document.getElementById('create-player-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const createPlayerBtn = document.getElementById('create-player-btn');
+        
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', () => {
+            createPlayerBtn.addEventListener('click', createPlayer);
+            
+            // Set up action buttons
+            document.getElementById('train-batting').addEventListener('click', () => trainSkill('batting'));
+            document.getElementById('train-bowling').addEventListener('click', () => trainSkill('bowling'));
+            document.getElementById('train-fielding').addEventListener('click', () => trainSkill('fielding'));
+            document.getElementById('train-fitness').addEventListener('click', () => trainSkill('fitness'));
+            document.getElementById('train-mental').addEventListener('click', () => trainSkill('mental'));
+            
+            document.getElementById('play-t20').addEventListener('click', () => playMatch('T20'));
+            document.getElementById('play-odi').addEventListener('click', () => playMatch('ODI'));
+            document.getElementById('play-test').addEventListener('click', () => playMatch('Test'));
+            
+            document.getElementById('rest-btn').addEventListener('click', rest);
+            document.getElementById('advance-time').addEventListener('click', advanceTime);
+        });
+
+        function createPlayer() {
+            const name = document.getElementById('player-name').value;
+            const role = document.getElementById('player-role').value;
+            const background = document.getElementById('player-background').value;
+            
+            if (!name) {
+                alert("Please enter a player name");
+                return;
+            }
+            
+            // Create player object
+            gameState.player = {
+                name,
+                role,
+                background,
+                age: Math.floor(Math.random() * 7) + 16, // 16-22
+                skills: {
+                    batting: Math.floor(Math.random() * 41) + 30, // 30-70
+                    bowling: Math.floor(Math.random() * 41) + 30,
+                    fielding: Math.floor(Math.random() * 41) + 40,
+                    fitness: Math.floor(Math.random() * 41) + 50,
+                    mental: Math.floor(Math.random() * 41) + 40
+                },
+                experience: 0,
+                reputation: 1,
+                fatigue: 0,
+                injured: false,
+                current_form: 0,
+                career_stats: {
+                    matches: 0,
+                    runs: 0,
+                    wickets: 0,
+                    centuries: 0,
+                    five_wkts: 0
+                },
+                traits: generateTraits(background)
+            };
+            
+            // Update UI
+            updatePlayerDisplay();
+            renderSkills();
+            renderTraits();
+            renderStats();
+            
+            // Switch to game screen
+            createPlayerScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            // Add news item
+            addNewsItem(`${name} begins their cricket career from ${background}!`);
+        }
+        
+        function generateTraits(background) {
+            const traits = {
+                confidence: Math.floor(Math.random() * 10) + 1,
+                discipline: Math.floor(Math.random() * 10) + 1,
+                aggression: Math.floor(Math.random() * 10) + 1,
+                leadership: Math.floor(Math.random() * 10) + 1
+            };
+            
+            // Background modifiers
+            if (background === "Cricket Academy") {
+                traits.discipline = Math.min(10, traits.discipline + 2);
+            } else if (background === "Street Cricket") {
+                traits.aggression = Math.min(10, traits.aggression + 2);
+            }
+            
+            return traits;
+        }
+        
+        function updatePlayerDisplay() {
+            const player = gameState.player;
+            document.getElementById('player-name-display').textContent = player.name;
+            document.getElementById('player-role-display').textContent = `Role: ${player.role}`;
+            document.getElementById('player-age').textContent = `Age: ${player.age}`;
+            document.getElementById('player-reputation').textContent = `Reputation: ${player.reputation.toFixed(1)}/10`;
+            
+            const formIndicator = document.getElementById('player-form');
+            let formSymbol = '→'; // neutral
+            if (player.current_form > 3) formSymbol = '↑↑';
+            else if (player.current_form > 0) formSymbol = '↑';
+            else if (player.current_form < -3) formSymbol = '↓↓';
+            else if (player.current_form < 0) formSymbol = '↓';
+            formIndicator.textContent = `Form: ${formSymbol}`;
+            
+            document.getElementById('player-fatigue').textContent = `Fatigue: ${player.fatigue}/10`;
+            
+            const injuryDisplay = document.getElementById('player-injury');
+            if (player.injured) {
+                injuryDisplay.classList.remove('hidden');
+            } else {
+                injuryDisplay.classList.add('hidden');
+            }
+        }
+        
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            container.innerHTML = '';
+            
+            for (const [skill, value] of Object.entries(gameState.player.skills)) {
+                const skillDiv = document.createElement('div');
+                skillDiv.innerHTML = `
+                    <p>${skill.charAt(0).toUpperCase() + skill.slice(1)}: ${value}/100</p>
+                    <div class="skill-meter">
+                        <div class="skill-fill" style="width: ${value}%"></div>
+                    </div>
+                `;
+                container.appendChild(skillDiv);
+            }
+        }
+        
+        function renderTraits() {
+            const container = document.getElementById('traits-container');
+            container.innerHTML = '';
+            
+            for (const [trait, value] of Object.entries(gameState.player.traits)) {
+                const traitDiv = document.createElement('div');
+                traitDiv.innerHTML = `
+                    <p>${trait.charAt(0).toUpperCase() + trait.slice(1)}: ${value}/10</p>
+                    <div class="skill-meter">
+                        <div class="skill-fill" style="width: ${value * 10}%"></div>
+                    </div>
+                `;
+                container.appendChild(traitDiv);
+            }
+        }
+        
+        function renderStats() {
+            const container = document.getElementById('stats-container');
+            container.innerHTML = '';
+            
+            for (const [stat, value] of Object.entries(gameState.player.career_stats)) {
+                const statDiv = document.createElement('div');
+                statDiv.textContent = `${stat.charAt(0).toUpperCase() + stat.slice(1).replace('_', ' ')}: ${value}`;
+                container.appendChild(statDiv);
+            }
+        }
+        
+        function addNewsItem(text) {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            
+            const dateStr = gameState.world.currentDate.toISOString().split('T')[0];
+            newsItem.textContent = `${dateStr}: ${text}`;
+            
+            gameState.world.news.push(`${dateStr}: ${text}`);
+            
+            const container = document.getElementById('news-container');
+            container.insertBefore(newsItem, container.firstChild);
+            
+            // Keep only last 10 news items
+            if (gameState.world.news.length > 10) {
+                gameState.world.news.shift();
+                if (container.children.length > 10) {
+                    container.removeChild(container.lastChild);
+                }
+            }
+        }
+        
+        function trainSkill(skill) {
+            const player = gameState.player;
+            
+            if (player.injured) {
+                alert("Cannot train while injured!");
+                return;
+            }
+            
+            const intensity = parseInt(document.getElementById('train-intensity').value) || 1;
+            const improvement = Math.floor(Math.random() * 3) * intensity;
+            
+            player.skills[skill] = Math.min(100, player.skills[skill] + improvement);
+            player.fatigue += intensity;
+            
+            // Risk of injury (5% chance when intensity > 1)
+            if (intensity > 1 && Math.random() < 0.05) {
+                player.injured = true;
+                addNewsItem(`${player.name} suffered an injury during ${skill} training!`);
+            }
+            
+            // Advance time by 1 day
+            advanceTime(1);
+            
+            // Update displays
+            renderSkills();
+            updatePlayerDisplay();
+            
+            alert(`Trained ${skill}! Improved by ${improvement} points.`);
+        }
+        
+        function playMatch(matchType) {
+            const player = gameState.player;
+            
+            if (player.injured) {
+                alert("Cannot play while injured!");
+                return;
+            }
+            
+            // Determine match length in days
+            const matchDays = matchType === 'Test' ? 5 : matchType === 'ODI' ? 1 : 0.5;
+            
+            // Base performance
+            let battingPerf = player.skills.batting / 10 + Math.floor(Math.random() * 11) - 5 + player.current_form;
+            let bowlingPerf = player.skills.bowling / 10 + Math.floor(Math.random() * 11) - 5 + player.current_form;
+            
+            // Role modifiers
+            if (player.role === 'Batter') battingPerf += 5;
+            else if (player.role === 'Bowler') bowlingPerf += 5;
+            
+            // Generate match stats
+            const runs = Math.max(0, Math.floor(battingPerf * (matchType === 'T20' ? 5 : 10)));
+            const wickets = Math.min(10, Math.floor(bowlingPerf * (matchType === 'Test' ? 0.5 : 1)));
+            
+            // Update career stats
+            player.career_stats.matches += 1;
+            player.career_stats.runs += runs;
+            player.career_stats.wickets += wickets;
+            
+            if (runs >= 100) player.career_stats.centuries += 1;
+            if (wickets >= 5) player.career_stats.five_wkts += 1;
+            
+            // Update experience and reputation
+            player.experience += matchType === 'Test' ? 3 : matchType === 'ODI' ? 2 : 1;
+            player.reputation = Math.min(10, player.reputation + (runs / 100) + (wickets / 5));
+            
+            // Update form
+            const perfScore = (runs / 50) + (wickets / 3) - 1;
+            player.current_form = Math.max(-10, Math.min(10, player.current_form + perfScore));
+            
+            // Add fatigue
+            player.fatigue += matchType === 'Test' ? 10 : matchType === 'ODI' ? 6 : 4;
+            
+            // Advance time
+            advanceTime(matchDays);
+            
+            // Show match result
+            const resultDiv = document.getElementById('match-result');
+            document.getElementById('match-type-result').textContent = `${matchType} Match`;
+            document.getElementById('match-runs').textContent = `Runs: ${runs}`;
+            
+            const wicketsDisplay = document.getElementById('match-wickets');
+            if (player.role !== 'Batter') {
+                wicketsDisplay.textContent = `Wickets: ${wickets}`;
+                wicketsDisplay.classList.remove('hidden');
+            } else {
+                wicketsDisplay.classList.add('hidden');
+            }
+            
+            let performanceText = 'Average';
+            if (perfScore > 1) performanceText = 'Excellent';
+            else if (perfScore > 0) performanceText = 'Good';
+            else if (perfScore < -1) performanceText = 'Poor';
+            document.getElementById('match-performance').textContent = `Performance: ${performanceText}`;
+            
+            resultDiv.classList.remove('hidden');
+            
+            // Add news item for exceptional performances
+            if (runs > 80 || wickets > 3) {
+                addNewsItem(`${player.name} ${runs > 80 ? `scored ${runs} runs` : `took ${wickets} wickets`} in ${matchType} match!`);
+            }
+            
+            // Update displays
+            updatePlayerDisplay();
+            renderStats();
+        }
+        
+        function rest() {
+            const player = gameState.player;
+            
+            player.fatigue = Math.max(0, player.fatigue - 3);
+            
+            // Chance to recover from injury
+            if (player.injured && Math.random() > 0.3) {
+                player.injured = false;
+                addNewsItem(`${player.name} has recovered from injury!`);
+            }
+            
+            // Advance time by 3 days
+            advanceTime(3);
+            
+            updatePlayerDisplay();
+            alert("Resting... Fatigue reduced.");
+        }
+        
+        function advanceTime(days = 7) {
+            const currentDate = gameState.world.currentDate;
+            gameState.world.currentDate = new Date(currentDate.getTime() + days * 24 * 60 * 60 * 1000);
+            
+            // Random events (10% chance)
+            if (Math.random() < 0.1) {
+                const events = [
+                    "New T20 league announced",
+                    "Scandal rocks national team",
+                    "Pitch conditions debate heats up",
+                    "Legendary player retires",
+                    "New cricket technology unveiled"
+                ];
+                addNewsItem(events[Math.floor(Math.random() * events.length)]);
+            }
+            
+            // Age player if year changes
+            const newDate = gameState.world.currentDate;
+            if (newDate.getFullYear() > currentDate.getFullYear()) {
+                gameState.player.age += 1;
+            }
+            
+            updatePlayerDisplay();
+        }
+    </script>
+</body>
+</html>
